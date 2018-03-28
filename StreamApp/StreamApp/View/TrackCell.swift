@@ -13,5 +13,7 @@ class TrackCell: UITableViewCell {
     //Outlets
     @IBOutlet weak var trackTitle: UILabel!
     
-
+    func configureStationCell(title: String){
+        trackTitle.text = title
+    }
 }

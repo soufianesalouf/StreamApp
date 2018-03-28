@@ -50,7 +50,7 @@
                                 <rect key="frame" x="0.0" y="70" width="375" height="423"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="40" id="jsV-WC-5L9" customClass="TrackCell" customModule="StreamApp" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TrackCell" rowHeight="40" id="jsV-WC-5L9" customClass="TrackCell" customModule="StreamApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="375" height="40"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jsV-WC-5L9" id="Q4K-TM-1R4">
@@ -83,24 +83,24 @@
                                 <rect key="frame" x="0.0" y="493" width="375" height="174"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tdB-AP-QzW">
-                                        <rect key="frame" x="60" y="16.5" width="305" height="27.5"/>
+                                        <rect key="frame" x="60" y="13" width="305" height="27.5"/>
                                         <fontDescription key="fontDescription" name="AvenirNext-Bold" family="Avenir Next" pointSize="20"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="aaH-aE-4Nm">
-                                        <rect key="frame" x="-2" y="60" width="379" height="31"/>
+                                        <rect key="frame" x="-2" y="56.5" width="379" height="31"/>
                                         <color key="tintColor" red="0.99215686274509807" green="0.63137254901960782" blue="0.11372549019607843" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </slider>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1by-uS-ev5">
-                                        <rect key="frame" x="10" y="90" width="43" height="20"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                        <rect key="frame" x="10" y="86.5" width="46" height="23.5"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="03:37" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kg4-RV-EXl">
-                                        <rect key="frame" x="322" y="90" width="43" height="20"/>
-                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                        <rect key="frame" x="319" y="86.5" width="46" height="23.5"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -110,23 +110,35 @@
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aD7-YN-bIu" userLabel="Previous">
                                                 <rect key="frame" x="0.0" y="0.0" width="74" height="44"/>
                                                 <state key="normal" image="btn-previous"/>
+                                                <connections>
+                                                    <action selector="previousBtnWasPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Tao-eQ-ePp"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wek-Xf-mvg" userLabel="Play">
                                                 <rect key="frame" x="94" y="0.0" width="73.5" height="44"/>
                                                 <state key="normal" image="btn-play"/>
+                                                <connections>
+                                                    <action selector="playPauseBtnWasPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nvV-Nz-nZ3"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="adG-uK-819" userLabel="Stop">
                                                 <rect key="frame" x="187.5" y="0.0" width="74" height="44"/>
                                                 <state key="normal" image="btn-stop"/>
+                                                <connections>
+                                                    <action selector="stopBtnWasPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nbH-Tv-djJ"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c8W-Y1-a5H" userLabel="Next">
                                                 <rect key="frame" x="281.5" y="0.0" width="73.5" height="44"/>
                                                 <state key="normal" image="btn-next"/>
+                                                <connections>
+                                                    <action selector="nextBtnWasPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="sgv-eq-6nZ"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>
                                     <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NowPlayingBars" translatesAutoresizingMaskIntoConstraints="NO" id="h9e-hk-r6a">
-                                        <rect key="frame" x="10" y="10" width="40" height="40"/>
+                                        <rect key="frame" x="10" y="6.5" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="40" id="jqG-gl-U4B"/>
                                             <constraint firstAttribute="height" constant="40" id="yRz-p7-hNw"/>
@@ -169,6 +181,18 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="actualDurationLbl" destination="1by-uS-ev5" id="KWg-rn-1Rs"/>
+                        <outlet property="fullDurationLbl" destination="Kg4-RV-EXl" id="8lm-Ih-NvM"/>
+                        <outlet property="nextBtn" destination="c8W-Y1-a5H" id="OK4-5v-fM5"/>
+                        <outlet property="nowPlayingBarsImage" destination="h9e-hk-r6a" id="6rZ-C7-peU"/>
+                        <outlet property="playPauseBtn" destination="wek-Xf-mvg" id="eK5-2U-bIi"/>
+                        <outlet property="playbackSlider" destination="aaH-aE-4Nm" id="i1t-jZ-RAv"/>
+                        <outlet property="previousBtn" destination="aD7-YN-bIu" id="lmx-T9-lU0"/>
+                        <outlet property="songTitle" destination="tdB-AP-QzW" id="KOV-2C-pJD"/>
+                        <outlet property="stopBtn" destination="adG-uK-819" id="155-mc-S7h"/>
+                        <outlet property="tableView" destination="iae-f8-oa9" id="T1D-mC-DOF"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
