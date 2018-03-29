@@ -19,7 +19,7 @@ class HomeVC: UIViewController {
     @IBOutlet weak var actualDurationLbl: UILabel!
     @IBOutlet weak var fullDurationLbl: UILabel!
     @IBOutlet weak var songTitle: UILabel!
-    @IBOutlet weak var nowPlayingBarsImage: UIImageView!
+    @IBOutlet weak var nowPlayingAnimationImageView: UIImageView!
     @IBOutlet weak var playbackSlider: UISlider!
     @IBOutlet weak var tableView: UITableView!
     
@@ -29,15 +29,10 @@ class HomeVC: UIViewController {
     var playerItem: AVPlayerItem!
     var playerLayer: AVPlayerLayer!
     
-    //Current song from list of songs
-//    var listNum = 1
-    
     //LIST OF Audio Files
-//    var listOfSongs: [String] = ["AllOfMe.mp3","NtiSbabi.mp3", "TsalaLiyaSolde.mp3"]
     var songs : Songs!
     
     var currentSong = 0
-//    var currentList = 0
 
     override func viewDidLoad() {
         songTitle.text = "Loading ..."
@@ -47,7 +42,13 @@ class HomeVC: UIViewController {
         tableView.dataSource = self
         playbackSlider!.minimumValue = 0
         setPlayer()
-        //playOn()
+        if player?.rate == 0
+        {
+            player!.play()
+            playPauseBtn!.setImage(UIImage(named: "btn-pause.png"), for: UIControlState.normal)
+        }
+        // Create NowPlaying Animation
+        createNowPlayingAnimation()
     }
     
     func importSongs(){
@@ -69,11 +70,19 @@ class HomeVC: UIViewController {
         let seconds : Int64 = Int64(playbackSlider.value)
         let targetTime:CMTime = CMTimeMake(seconds, 1)
         
+        let mySecs2 = Int(seconds) % 60
+        let myMins2 = Int(seconds / 60)
+        
+        let myTimes2 = String(myMins2) + ":" + String(mySecs2)
+        actualDurationLbl.text = myTimes2 //current time of audio track
+        
         player!.seek(to: targetTime)
         
         if player!.rate == 0
         {
             player?.play()
+            self.startNowPlayingAnimation(true)
+            playPauseBtn!.setImage(UIImage(named: "btn-pause.png"), for: UIControlState.normal)
         }
     }
     
@@ -86,12 +95,12 @@ class HomeVC: UIViewController {
         } else {
             url = URL(string: songs.tracks[currentSong].url)
         }
+        
+        let path = IndexPath(row: currentSong, section: 0)
+        tableView.selectRow(at: path, animated: false, scrollPosition: .none)
+        
         let playerItem: AVPlayerItem = AVPlayerItem(url: url!)
         player = AVPlayer(playerItem: playerItem)
-        
-//        let index = IndexPath(row: currentSong, section: 0)
-//        self.tableView.selectRow(at: index, animated: true, scrollPosition: UITableViewScrollPosition.middle)
-//        tableView(self.tableView, didSelectRowAt: index)
         
         playerLayer=AVPlayerLayer(player: player!)
         playerLayer?.frame=CGRect(x: 0, y: 0, width: 10, height: 50)
@@ -109,10 +118,8 @@ class HomeVC: UIViewController {
         
         playbackSlider!.maximumValue = Float(seconds)
         playbackSlider!.isContinuous = false
-//        playbackSlider!.tintColor = UIColor.green
         
         playbackSlider?.addTarget(self, action: #selector(playbackSliderValueChanged(_:)), for: .valueChanged)
-//        self.view.addSubview(playbackSlider!)
         
         //subroutine used to keep track of current location of time in audio file
         player!.addPeriodicTimeObserver(forInterval: CMTimeMakeWithSeconds(1, 1), queue: DispatchQueue.main) { (CMTime) -> Void in
@@ -120,7 +127,7 @@ class HomeVC: UIViewController {
                 let time : Float64 = CMTimeGetSeconds(self.player!.currentTime())
                 
                 //comment out if you don't want continous play
-                if(time == seconds && self.currentSong != self.songs.tracks.count - 1){
+                if(Int(time) == Int(seconds)){
                     self.nextSong()
                 }
                 
@@ -128,6 +135,7 @@ class HomeVC: UIViewController {
                 
                 if(mySecs2 == 1){ //show title of song after 1 second
                     self.songTitle.text = self.songs.tracks[self.currentSong].title
+                    self.startNowPlayingAnimation(true)
                 }
                 let myMins2 = Int(time / 60)
                 
@@ -142,6 +150,7 @@ class HomeVC: UIViewController {
     
     //plays next song automatically when previous song finishes
     func nextSong(){
+        startNowPlayingAnimation(false)
         songTitle.text = "Loading ..."
         if currentSong < songs.tracks.count - 1{
             currentSong = currentSong + 1
@@ -161,6 +170,7 @@ class HomeVC: UIViewController {
     }
     
     @IBAction func previousBtnWasPressed(_ sender: Any) {
+        startNowPlayingAnimation(false)
         songTitle.text = "Loading ..."
         if(currentSong > 0){
             currentSong = currentSong - 1
@@ -183,13 +193,16 @@ class HomeVC: UIViewController {
         {
             player!.play()
             playPauseBtn!.setImage(UIImage(named: "btn-pause.png"), for: UIControlState.normal)
+            startNowPlayingAnimation(true)
         } else {
             player!.pause()
+            startNowPlayingAnimation(false)
             playPauseBtn!.setImage(UIImage(named: "btn-play.png"), for: UIControlState.normal)
         }
     }
     
     @IBAction func stopBtnWasPressed(_ sender: Any) {
+        nowPlayingAnimationImageView.stopAnimating()
         songTitle.text = "Streamming Stopped."
         if player?.rate == 0
         {
@@ -202,6 +215,7 @@ class HomeVC: UIViewController {
     }
     
     @IBAction func nextBtnWasPressed(_ sender: Any) {
+        startNowPlayingAnimation(false)
         songTitle.text = "Loading ..."
         if(currentSong < songs.tracks.count - 1){
             currentSong = currentSong + 1
@@ -218,6 +232,15 @@ class HomeVC: UIViewController {
             playPauseBtn!.setImage(UIImage(named: "btn-pause.png"), for: UIControlState.normal)
             
         }
+    }
+    
+    func createNowPlayingAnimation() {
+        nowPlayingAnimationImageView.animationImages = AnimationFrames.createFrames()
+        nowPlayingAnimationImageView.animationDuration = 0.7
+    }
+    
+    func startNowPlayingAnimation(_ animate: Bool) {
+        animate ? nowPlayingAnimationImageView.startAnimating() : nowPlayingAnimationImageView.stopAnimating()
     }
     
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -242,6 +265,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         currentSong = indexPath.row
         playOn()
@@ -249,6 +273,7 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     
     //plays song when song selected from list (slightly different then play button)
     func playOn(){
+        startNowPlayingAnimation(false)
         songTitle.text = "Loading ..."
         player!.pause()
         player = nil

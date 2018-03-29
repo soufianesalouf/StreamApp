@@ -14,6 +14,7 @@
 		90B5F396206A936000CD065E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 90B5F394206A936000CD065E /* LaunchScreen.storyboard */; };
 		90B5F3A1206ABCC500CD065E /* TrackCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B5F3A0206ABCC500CD065E /* TrackCell.swift */; };
 		90B5F3A4206AC2E400CD065E /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B5F3A3206AC2E400CD065E /* Constants.swift */; };
+		90D85C43206C73060097E018 /* AnimationFrames.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D85C42206C73060097E018 /* AnimationFrames.swift */; };
 		90F3B62A206B1643009CC4E2 /* Songs.json in Resources */ = {isa = PBXBuildFile; fileRef = 90F3B629206B1643009CC4E2 /* Songs.json */; };
 		90F3B62C206B1712009CC4E2 /* Track.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90F3B62B206B1712009CC4E2 /* Track.swift */; };
 		90F3B62E206B1F35009CC4E2 /* Songs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90F3B62D206B1F35009CC4E2 /* Songs.swift */; };
@@ -29,6 +30,7 @@
 		90B5F397206A936000CD065E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		90B5F3A0206ABCC500CD065E /* TrackCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackCell.swift; sourceTree = "<group>"; };
 		90B5F3A3206AC2E400CD065E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		90D85C42206C73060097E018 /* AnimationFrames.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationFrames.swift; sourceTree = "<group>"; };
 		90F3B629206B1643009CC4E2 /* Songs.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Songs.json; sourceTree = "<group>"; };
 		90F3B62B206B1712009CC4E2 /* Track.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Track.swift; sourceTree = "<group>"; };
 		90F3B62D206B1F35009CC4E2 /* Songs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Songs.swift; sourceTree = "<group>"; };
@@ -90,6 +92,7 @@
 			isa = PBXGroup;
 			children = (
 				90B5F3A0206ABCC500CD065E /* TrackCell.swift */,
+				90D85C42206C73060097E018 /* AnimationFrames.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -193,6 +196,7 @@
 			files = (
 				90F3B62E206B1F35009CC4E2 /* Songs.swift in Sources */,
 				90B5F38E206A934F00CD065E /* HomeVC.swift in Sources */,
+				90D85C43206C73060097E018 /* AnimationFrames.swift in Sources */,
 				90F3B62C206B1712009CC4E2 /* Track.swift in Sources */,
 				90B5F38C206A934F00CD065E /* AppDelegate.swift in Sources */,
 				90B5F3A1206ABCC500CD065E /* TrackCell.swift in Sources */,

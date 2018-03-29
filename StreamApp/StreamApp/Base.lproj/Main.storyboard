@@ -46,19 +46,19 @@
                                     <constraint firstItem="MwF-bG-daD" firstAttribute="centerX" secondItem="su8-Q5-FO9" secondAttribute="centerX" id="Rpy-lV-ULZ"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="40" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="iae-f8-oa9">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="50" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="iae-f8-oa9">
                                 <rect key="frame" x="0.0" y="70" width="375" height="423"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TrackCell" rowHeight="40" id="jsV-WC-5L9" customClass="TrackCell" customModule="StreamApp" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="375" height="40"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TrackCell" rowHeight="50" id="jsV-WC-5L9" customClass="TrackCell" customModule="StreamApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="375" height="50"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="jsV-WC-5L9" id="Q4K-TM-1R4">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="40"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Song title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VQC-fn-hNl">
-                                                    <rect key="frame" x="10" y="5" width="355" height="30"/>
+                                                    <rect key="frame" x="60" y="10" width="305" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="Wbb-k8-tNp"/>
                                                     </constraints>
@@ -66,14 +66,24 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="NowPlayingBars" translatesAutoresizingMaskIntoConstraints="NO" id="kPd-1p-SgX">
+                                                    <rect key="frame" x="10" y="5" width="40" height="40"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="ZLg-YY-42W"/>
+                                                        <constraint firstAttribute="width" constant="40" id="v87-wu-OEf"/>
+                                                    </constraints>
+                                                </imageView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="VQC-fn-hNl" firstAttribute="centerY" secondItem="Q4K-TM-1R4" secondAttribute="centerY" id="HGh-aN-McZ"/>
+                                                <constraint firstItem="kPd-1p-SgX" firstAttribute="centerY" secondItem="Q4K-TM-1R4" secondAttribute="centerY" id="9rL-HU-yqk"/>
+                                                <constraint firstItem="VQC-fn-hNl" firstAttribute="centerY" secondItem="Q4K-TM-1R4" secondAttribute="centerY" id="C2E-pQ-mjv"/>
+                                                <constraint firstItem="kPd-1p-SgX" firstAttribute="leading" secondItem="Q4K-TM-1R4" secondAttribute="leading" constant="10" id="Ein-bi-kWP"/>
+                                                <constraint firstItem="VQC-fn-hNl" firstAttribute="leading" secondItem="kPd-1p-SgX" secondAttribute="trailing" constant="10" id="Gjj-yJ-VV6"/>
                                                 <constraint firstAttribute="trailing" secondItem="VQC-fn-hNl" secondAttribute="trailing" constant="10" id="Too-mF-Sow"/>
-                                                <constraint firstItem="VQC-fn-hNl" firstAttribute="leading" secondItem="Q4K-TM-1R4" secondAttribute="leading" constant="10" id="ifb-gM-jke"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="nowPlayingAnimationImageView" destination="kPd-1p-SgX" id="35d-rQ-WeT"/>
                                             <outlet property="trackTitle" destination="VQC-fn-hNl" id="mi0-EC-9b5"/>
                                         </connections>
                                     </tableViewCell>
@@ -185,7 +195,7 @@
                         <outlet property="actualDurationLbl" destination="1by-uS-ev5" id="KWg-rn-1Rs"/>
                         <outlet property="fullDurationLbl" destination="Kg4-RV-EXl" id="8lm-Ih-NvM"/>
                         <outlet property="nextBtn" destination="c8W-Y1-a5H" id="OK4-5v-fM5"/>
-                        <outlet property="nowPlayingBarsImage" destination="h9e-hk-r6a" id="6rZ-C7-peU"/>
+                        <outlet property="nowPlayingAnimationImageView" destination="h9e-hk-r6a" id="6rZ-C7-peU"/>
                         <outlet property="playPauseBtn" destination="wek-Xf-mvg" id="eK5-2U-bIi"/>
                         <outlet property="playbackSlider" destination="aaH-aE-4Nm" id="i1t-jZ-RAv"/>
                         <outlet property="previousBtn" destination="aD7-YN-bIu" id="lmx-T9-lU0"/>
