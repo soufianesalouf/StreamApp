@@ -11,10 +11,11 @@ import UIKit
 class TrackCell: UITableViewCell {
     
     //Outlets
+    @IBOutlet weak var addToPlaylistBtn: UIButton!
     @IBOutlet weak var trackTitle: UILabel!
     @IBOutlet weak var nowPlayingAnimationImageView: UIImageView!
     
-    func configureStationCell(title: String){
+    func configureCell(title: String){
         trackTitle.text = title
 //        createNowPlayingAnimation()
 //        startNowPlayingAnimation(true)
@@ -28,4 +29,5 @@ class TrackCell: UITableViewCell {
     func startNowPlayingAnimation(_ animate: Bool) {
         animate ? nowPlayingAnimationImageView.startAnimating() : nowPlayingAnimationImageView.stopAnimating()
     }
+    
 }

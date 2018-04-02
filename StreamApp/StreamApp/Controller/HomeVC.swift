@@ -9,6 +9,8 @@
 import UIKit
 import AVFoundation
 
+let appDelegate = UIApplication.shared.delegate as? AppDelegate
+
 class HomeVC: UIViewController {
     
     //Outlets
@@ -22,6 +24,7 @@ class HomeVC: UIViewController {
     @IBOutlet weak var nowPlayingAnimationImageView: UIImageView!
     @IBOutlet weak var playbackSlider: UISlider!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var collectionView: UICollectionView!
     
     
     //Variables
@@ -30,16 +33,33 @@ class HomeVC: UIViewController {
     var playerLayer: AVPlayerLayer!
     
     //LIST OF Audio Files
-    var songs : Songs!
+    var playlists = [Playlist]()
+    var trackToPlay = [Track]()
+    
     
     var currentSong = 0
 
     override func viewDidLoad() {
-        songTitle.text = "Loading ..."
         super.viewDidLoad()
-        importSongs()
+        songTitle.text = "Loading ..."
+        
+        tableView.isHidden = false
+        collectionView.isHidden = true
+        
+        DataService.instance.importSongs()
+        trackToPlay = DataService.instance.songs.tracks
+        
         tableView.delegate = self
         tableView.dataSource = self
+        
+        DataService.instance.importPlaylists { (complete) in
+            if complete {
+                playlists = DataService.instance.playlists
+            }
+        }
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
         playbackSlider!.minimumValue = 0
         setPlayer()
         if player?.rate == 0
@@ -51,15 +71,14 @@ class HomeVC: UIViewController {
         createNowPlayingAnimation()
     }
     
-    func importSongs(){
-        let path = Bundle.main.path(forResource: "Songs", ofType: "json")
-        let url = URL(fileURLWithPath: path!)
-        do {
-            let data = try Data(contentsOf: url)
-            self.songs = try JSONDecoder().decode(Songs.self, from: data)
-        } catch {
-            debugPrint(error)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        DataService.instance.importPlaylists { (complete) in
+            if complete {
+                playlists = DataService.instance.playlists
+            }
         }
+        collectionView.reloadData()
     }
     
     /* Function called when sliders is adjusted manually.
@@ -93,7 +112,7 @@ class HomeVC: UIViewController {
         if USE_RADIO_URL {
             url = URL(string: RADIO_URL)
         } else {
-            url = URL(string: songs.tracks[currentSong].url)
+            url = URL(string: trackToPlay[currentSong].url)
         }
         
         let path = IndexPath(row: currentSong, section: 0)
@@ -134,7 +153,7 @@ class HomeVC: UIViewController {
                 let mySecs2 = Int(time) % 60
                 
                 if(mySecs2 == 1){ //show title of song after 1 second
-                    self.songTitle.text = self.songs.tracks[self.currentSong].title
+                    self.songTitle.text = self.trackToPlay[self.currentSong].title
                     self.startNowPlayingAnimation(true)
                 }
                 let myMins2 = Int(time / 60)
@@ -152,7 +171,7 @@ class HomeVC: UIViewController {
     func nextSong(){
         startNowPlayingAnimation(false)
         songTitle.text = "Loading ..."
-        if currentSong < songs.tracks.count - 1{
+        if currentSong < trackToPlay.count - 1{
             currentSong = currentSong + 1
         } else {
             currentSong = 0
@@ -175,7 +194,7 @@ class HomeVC: UIViewController {
         if(currentSong > 0){
             currentSong = currentSong - 1
         } else {
-            currentSong = songs.tracks.count - 1
+            currentSong = trackToPlay.count - 1
         }
         player!.pause()
         player = nil
@@ -188,7 +207,7 @@ class HomeVC: UIViewController {
     }
     
     @IBAction func playPauseBtnWasPressed(_ sender: Any) {
-        songTitle.text = songs.tracks[currentSong].title
+        songTitle.text = trackToPlay[currentSong].title
         if player?.rate == 0
         {
             player!.play()
@@ -217,7 +236,7 @@ class HomeVC: UIViewController {
     @IBAction func nextBtnWasPressed(_ sender: Any) {
         startNowPlayingAnimation(false)
         songTitle.text = "Loading ..."
-        if(currentSong < songs.tracks.count - 1){
+        if(currentSong < trackToPlay.count - 1){
             currentSong = currentSong + 1
         } else {
             currentSong = 0
@@ -243,6 +262,38 @@ class HomeVC: UIViewController {
         animate ? nowPlayingAnimationImageView.startAnimating() : nowPlayingAnimationImageView.stopAnimating()
     }
     
+    @objc func buttonTapped(_ sender:UIButton!){
+        performSegue(withIdentifier: "AddToPlaylistVC", sender: sender)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let addToPlaylistVC = segue.destination as? AddToPlaylistVC {
+            addToPlaylistVC.modalPresentationStyle = .custom
+            if let button = sender as? UIButton {
+                addToPlaylistVC.track = trackToPlay[button.tag]
+            }
+        }
+    }
+    
+    @IBAction func songsBtnPressed(_ sender: Any) {
+        trackToPlay = DataService.instance.songs.tracks
+        tableView.reloadData()
+        tableView.isHidden = false
+        collectionView.isHidden = true
+    }
+    
+    @IBAction func playlistsBtnPressed(_ sender: Any) {
+        DataService.instance.importPlaylists { (complete) in
+            if complete {
+                playlists = DataService.instance.playlists
+            }
+        }
+        collectionView.reloadData()
+        tableView.isHidden = true
+        collectionView.isHidden = false
+    }
+    
+    
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
     }
@@ -256,12 +307,14 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return songs.tracks.count
+        return trackToPlay.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "TrackCell", for: indexPath) as? TrackCell else { return UITableViewCell() }
-        cell.configureStationCell(title: songs.tracks[indexPath.row].title)
+        cell.configureCell(title: trackToPlay[indexPath.row].title)
+        cell.addToPlaylistBtn.tag = indexPath.row //or value whatever you want (must be Int)
+        cell.addToPlaylistBtn.addTarget(self, action: #selector(buttonTapped(_:)), for: UIControlEvents.touchUpInside)
         return cell
     }
     
@@ -283,5 +336,46 @@ extension HomeVC: UITableViewDelegate, UITableViewDataSource {
             player!.play()
             playPauseBtn!.setImage(UIImage(named: "btn-pause.png"), for: UIControlState.normal)
         }
+    }
+}
+
+extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return playlists.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PlaylistCVCell", for: indexPath) as? PlaylistCVCell else { return UICollectionViewCell() }
+        cell.configureCell(playlist: playlists[indexPath.row])
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var numOfColumns : CGFloat = 3
+        if UIScreen.main.bounds.width > 320 {
+            numOfColumns = 4
+        }
+        
+        let spaceBetweenCells : CGFloat = 10
+        let padding : CGFloat = 40
+        let cellDimension = ((collectionView.bounds.width - padding) - (numOfColumns - 1) * spaceBetweenCells) / numOfColumns
+        return CGSize(width: cellDimension, height: cellDimension)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("playlist name: \(playlists[indexPath.row].playlistName!)")
+        print("number of songs in the play list : \(playlists[indexPath.row].tracks?.count)")
+//        DataService.instance.importSongsToPlay(byPlaylist: playlists[indexPath.row], completion: { (complete) in
+//            if complete {
+//                trackToPlay = DataService.instance.songsToPlay
+//                tableView.reloadData()
+//                tableView.isHidden = false
+//                collectionView.isHidden = true
+//            }
+//        })
     }
 }
