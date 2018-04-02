@@ -262,6 +262,16 @@ class HomeVC: UIViewController {
         animate ? nowPlayingAnimationImageView.startAnimating() : nowPlayingAnimationImageView.stopAnimating()
     }
     
+    @objc func deletePlaylistPressed(_ sender:UIButton!){
+        DataService.instance.deleteElement(playlist: playlists[sender.tag])
+        DataService.instance.importPlaylists { (complete) in
+            if complete {
+                playlists = DataService.instance.playlists
+            }
+        }
+        collectionView.reloadData()
+    }
+    
     @objc func buttonTapped(_ sender:UIButton!){
         performSegue(withIdentifier: "AddToPlaylistVC", sender: sender)
     }
@@ -351,6 +361,8 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PlaylistCVCell", for: indexPath) as? PlaylistCVCell else { return UICollectionViewCell() }
         cell.configureCell(playlist: playlists[indexPath.row])
+        cell.deleteBtn.tag = indexPath.row //or value whatever you want (must be Int)
+        cell.deleteBtn.addTarget(self, action: #selector(deletePlaylistPressed(_:)), for: UIControlEvents.touchUpInside)
         return cell
     }
     
@@ -367,15 +379,19 @@ extension HomeVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("playlist name: \(playlists[indexPath.row].playlistName!)")
-        print("number of songs in the play list : \(playlists[indexPath.row].tracks?.count)")
-//        DataService.instance.importSongsToPlay(byPlaylist: playlists[indexPath.row], completion: { (complete) in
-//            if complete {
-//                trackToPlay = DataService.instance.songsToPlay
-//                tableView.reloadData()
-//                tableView.isHidden = false
-//                collectionView.isHidden = true
-//            }
-//        })
+//        print("playlist name: \(playlists[indexPath.row].playlistName!)")
+//        print("number of songs in the play list : \(playlists[indexPath.row].tracks!.count)")
+//        print("this playlist containt : ")
+//        for index in 0...playlists[indexPath.row].tracks!.count - 1 {
+//            print("\(playlists[indexPath.row].tracks![index])")
+//        }
+        DataService.instance.importSongsToPlay(byPlaylist: playlists[indexPath.row], completion: { (complete) in
+            if complete {
+                trackToPlay = DataService.instance.songsToPlay
+                tableView.reloadData()
+                tableView.isHidden = false
+                collectionView.isHidden = true
+            }
+        })
     }
 }

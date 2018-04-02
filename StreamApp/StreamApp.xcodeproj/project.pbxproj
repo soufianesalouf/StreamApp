@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		902D844820729F3700703D2C /* CoreDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 902D844720729F3700703D2C /* CoreDataService.swift */; };
 		904A835E2070624E00656770 /* AddToPlaylistVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904A835C2070624E00656770 /* AddToPlaylistVC.swift */; };
 		904A837F207067B600656770 /* AsyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904A8361207067B500656770 /* AsyncButton.swift */; };
 		904A8380207067B600656770 /* AsyncImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 904A8362207067B500656770 /* AsyncImageView.swift */; };
@@ -55,6 +56,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		902D844720729F3700703D2C /* CoreDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataService.swift; sourceTree = "<group>"; };
 		904A835C2070624E00656770 /* AddToPlaylistVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToPlaylistVC.swift; sourceTree = "<group>"; };
 		904A8361207067B500656770 /* AsyncButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncButton.swift; sourceTree = "<group>"; };
 		904A8362207067B500656770 /* AsyncImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncImageView.swift; sourceTree = "<group>"; };
@@ -230,6 +232,7 @@
 			isa = PBXGroup;
 			children = (
 				90F334A32071868A00835F2E /* DataService.swift */,
+				902D844720729F3700703D2C /* CoreDataService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -328,6 +331,7 @@
 				904A8384207067B600656770 /* DesignableImageView.swift in Sources */,
 				90F3B62E206B1F35009CC4E2 /* Songs.swift in Sources */,
 				90B5F38E206A934F00CD065E /* HomeVC.swift in Sources */,
+				902D844820729F3700703D2C /* CoreDataService.swift in Sources */,
 				90D85C46206C88BA0097E018 /* model.xcdatamodeld in Sources */,
 				90D85C43206C73060097E018 /* AnimationFrames.swift in Sources */,
 				904A8389207067B600656770 /* DesignableView.swift in Sources */,

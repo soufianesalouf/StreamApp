@@ -14,6 +14,7 @@ class PlaylistCVCell: UICollectionViewCell {
     @IBOutlet weak var playlistImageView: UIImageView!
     @IBOutlet weak var playlistNameLbl: UILabel!
     @IBOutlet weak var playlistDescriptionLbl: UILabel!
+    @IBOutlet weak var deleteBtn: UIButton!
     
     func configureCell(playlist: Playlist){
         playlistNameLbl.text = playlist.playlistName

@@ -130,7 +130,7 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Bpl-PZ-TdM">
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Bpl-PZ-TdM">
                                 <rect key="frame" x="0.0" y="90" width="375" height="403"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="G0V-Id-xjQ">
@@ -172,6 +172,13 @@
                                                         </label>
                                                     </subviews>
                                                 </stackView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="siZ-2D-QHh">
+                                                    <rect key="frame" x="80" y="0.0" width="30" height="32"/>
+                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                    <state key="normal" title="X">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
+                                                </button>
                                             </subviews>
                                         </view>
                                         <constraints>
@@ -181,9 +188,12 @@
                                             <constraint firstAttribute="bottom" secondItem="5i5-mD-dK1" secondAttribute="bottom" constant="5" id="UxY-IG-g1H"/>
                                             <constraint firstItem="nqt-zd-KO3" firstAttribute="top" secondItem="71i-mf-Hek" secondAttribute="top" constant="5" id="fwJ-Kq-gyX"/>
                                             <constraint firstItem="5i5-mD-dK1" firstAttribute="leading" secondItem="71i-mf-Hek" secondAttribute="leading" constant="5" id="h90-ma-zHZ"/>
+                                            <constraint firstItem="siZ-2D-QHh" firstAttribute="top" secondItem="71i-mf-Hek" secondAttribute="top" id="hcz-Zh-f5Y"/>
+                                            <constraint firstAttribute="trailing" secondItem="siZ-2D-QHh" secondAttribute="trailing" id="tGH-76-EqB"/>
                                             <constraint firstItem="5i5-mD-dK1" firstAttribute="top" secondItem="nqt-zd-KO3" secondAttribute="bottom" constant="5" id="uN1-v4-BQG"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="deleteBtn" destination="siZ-2D-QHh" id="XyP-1G-6xa"/>
                                             <outlet property="playlistDescriptionLbl" destination="myO-HQ-I7t" id="LnV-gB-S1p"/>
                                             <outlet property="playlistImageView" destination="nqt-zd-KO3" id="Nhv-DB-QkP"/>
                                             <outlet property="playlistNameLbl" destination="bYA-OP-HQH" id="y7w-3w-6WE"/>

@@ -77,30 +77,12 @@ class AddToPlaylistVC: UIViewController {
     
     @IBAction func newBtnWasPressed(_ sender: Any) {
         if playlistNameTextField.text != "" {
-            self.save { (saved) in
-                if saved {
-                    dismiss(animated: true, completion: nil)
-                }
-            }
-        }
-    }
-    
-    func save(completion: (_ finished: Bool) -> () ) {
-        guard let managedContext = appDelegate?.persistentContainer.viewContext else { return }
-        let playlist = Playlist(context: managedContext)
-        playlist.playlistName = playlistNameTextField.text
-        playlist.playlistDescription = playlistDescriptionTextField.text
-        print(track.title)
-        playlist.tracks?.append(track.title)
-        print("number Of track: \((playlist.tracks?.count)!)")
-        print("the track added : \(playlist.tracks![(playlist.tracks?.count)! - 1])")
-        do {
-            try managedContext.save()
-            completion(true)
-            print("Successfully Saved!")
-        } catch {
-            debugPrint("Counld not save : \(error.localizedDescription)")
-            completion(false)
+            DataService.instance.newPlaylist(forName: playlistNameTextField.text!, andDescription: playlistDescriptionTextField.text!, andTracks: [track!.title]
+                , withCompletionHandler: { (saved) in
+                    if saved {
+                        dismiss(animated: true, completion: nil)
+                    }
+            })
         }
     }
 }
@@ -118,5 +100,28 @@ extension AddToPlaylistVC: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "PlaylistCell", for: indexPath) as? PlaylistCell else { return UITableViewCell() }
         cell.configureCell(playlist: playlists[indexPath.row])
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        var tracks = playlists[indexPath.row].tracks
+        var filterdItemsArray = [String]()
+        
+        
+        func filterContentForSearchText(searchText: String) {
+            filterdItemsArray = (tracks?.filter { item in
+                return item.lowercased().contains(searchText.lowercased())
+                })!
+        }
+        
+        filterContentForSearchText(searchText: track!.title)
+        
+        if (filterdItemsArray.count >= 1 ) {
+            dismiss(animated: true, completion: nil)
+        } else {
+            tracks?.append(track!.title)
+            if DataService.instance.updatePlaylist(playlist: playlists[indexPath.row],tracks: tracks!) {
+                dismiss(animated: true, completion: nil)
+            }
+        }
     }
 }
