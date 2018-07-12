@@ -41,6 +41,24 @@ class HomeVC: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //IAP USAGE
+//        IAPHandler.shared.fetchAvailableProducts()
+//        IAPHandler.shared.purchaseStatusBlock = {[weak self] (type) in
+//            guard let strongSelf = self else{ return }
+//            if type == .purchased {
+//                let alertView = UIAlertController(title: "", message: type.message(), preferredStyle: .alert)
+//                let action = UIAlertAction(title: "OK", style: .default, handler: { (alert) in
+//
+//                })
+//                alertView.addAction(action)
+//                strongSelf.present(alertView, animated: true, completion: nil)
+//            }
+//        }
+        
+        //To make a purchase action for a product call and specify the index of the item to pay
+//        IAPHandler.shared.purchaseMyProduct(index: 0)
+        
         songTitle.text = "Loading ..."
         
         tableView.isHidden = false
@@ -263,7 +281,9 @@ class HomeVC: UIViewController {
     }
     
     @objc func deletePlaylistPressed(_ sender:UIButton!){
-        DataService.instance.deleteElement(playlist: playlists[sender.tag])
+        if DataService.instance.deleteElement(playlist: playlists[sender.tag]) {
+            print("Deleted")
+        }
         DataService.instance.importPlaylists { (complete) in
             if complete {
                 playlists = DataService.instance.playlists
